@@ -21,7 +21,11 @@ func getAuthDataCheckString(data *AuthData) string {
 		if v.Field(i).IsNil() || tag == "hash" {
 			continue
 		}
-		fields = append(fields, fmt.Sprintf("%s=%v", tag, v.Field(i).Elem().Interface()))
+		val := v.Field(i).Elem().Interface()
+		if val == nil || val == "null" {
+			continue
+		}
+		fields = append(fields, fmt.Sprintf("%s=%v", tag, val))
 	}
 	sort.Strings(fields)
 	return strings.Join(fields, "\n")
